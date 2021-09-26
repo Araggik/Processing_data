@@ -70,14 +70,13 @@ for line in lines:
             dict_words[word] = i
             i += 1
 
-dict_zero = {}
-for k,v in dict_words.items():
-    dict_zero[k] = 0
+dict_sentence = {}
 array_sentences = []
 for line in lines:
     s = line.lower()
     words = re.split('[^a-z]', s)
-    dict_sentence = dict_zero
+    for k,v in dict_words.items():
+        dict_sentence[k] = 0
     for word in words:
         if word != '':
             dict_sentence[word] += 1
