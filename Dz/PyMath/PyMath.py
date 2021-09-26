@@ -44,11 +44,57 @@ solution = solve_sys(vector_a)
 vector_y = get_values(vector_a,solution)
 
 plt.plot(vector_a,vector_y)
-plt.show()
+#plt.show()
 
-out_file = open('submission-2.txt', 'w')
+out_file = open('submission-2.txt','w')
 for w in solution:
     out_file.write(str(w) + ' ')
 out_file.close()
 
 # Task2
+
+import re
+from scipy.spatial.distance import cosine
+
+in_file = open('10 sentences.txt','r')
+lines = in_file.readlines()
+in_file.close()
+
+dict_words = {}
+i = 0
+for line in lines:
+    s = line.lower()
+    words = re.split('[^a-z]', s)
+    for word in words:
+        if word not in dict_words and word !='':
+            dict_words[word] = i
+            i += 1
+
+dict_zero = {}
+for k,v in dict_words.items():
+    dict_zero[k] = 0
+array_sentences = []
+for line in lines:
+    s = line.lower()
+    words = re.split('[^a-z]', s)
+    dict_sentence = dict_zero
+    for word in words:
+        if word != '':
+            dict_sentence[word] += 1
+    list_sentence = []
+    for k,v in dict_sentence.items():
+        list_sentence.append(v)
+    array_sentences.append(list_sentence)
+
+dict_result = {}
+i = 0
+for sen in array_sentences:
+    dict_result[i] = cosine(array_sentences[0],array_sentences[i])
+    i += 1
+
+list_result = [k for k,v in sorted(dict_result.items(), key = lambda item: item[1])]
+
+out_file = open('submission-1.txt','w')
+out_file.write(str(list_result[1]) + ' ')
+out_file.write(str(list_result[2]) + ' ')
+out_file.close()
